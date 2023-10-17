@@ -1,0 +1,5 @@
+          HOW TO DEPPLOY AND HOST YOUR WEBSITE USING INGINX AND DOCKER
+__________________________________________________________________________________
+
+
+https://www.codewithharry.com/blogpost/django-deploy-nginx-gunicorn/

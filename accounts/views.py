@@ -1,9 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import Userform
+from vendor.forms import Vendorform
+
+
+
+
 from django.contrib import messages
 
-from .models import Custom_User
+from .models import Custom_User,Userprofile
 
 # Create your views here.
 
@@ -64,3 +69,52 @@ def registerUser(request):
 
    
     return render(request,'accounts/registerUser.html',context)
+
+
+
+def registerVendor(request):
+    if request.method=='POST':
+            form=Userform(request.POST)
+            v_form=Vendorform(request.POST,request.FILES)
+            
+            if form.is_valid() and v_form.is_valid():
+                first_name=form.cleaned_data['first_name']
+                last_name=form.cleaned_data['last_name']
+                email=form.cleaned_data['email']
+                username=form.cleaned_data['username']
+                password=form.cleaned_data['password']
+                
+                
+                user=Custom_User.objects.create_user(first_name=first_name,last_name=last_name,email=email,username=username,password=password)
+                user.role=Custom_User.VENDOR
+                user.save()
+                
+                vendor=v_form.save(commit=False)
+                vendor.user=user 
+                user_profile=Userprofile.objects.get(user=user)
+                vendor.user_profile=user_profile
+                vendor.save()
+                messages.success(request,'YOUR ACCOUNT HAS BEEN CREATED SUCCESSFULLY PLEASE WAIT FOR APPROVAL')
+                return redirect('registerVendor')
+                
+                
+                
+            else:
+                print(form.errors)            
+    else:
+        form=Userform()
+        v_form=Vendorform()
+        
+    
+    
+    form=Userform()
+    v_form=Vendorform()
+    
+    context={
+        'forms':form ,
+        'v_form':v_form
+        
+    }
+    
+    
+    return render(request,'accounts/registerVendor.html',context)

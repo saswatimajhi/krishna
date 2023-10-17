@@ -27,10 +27,10 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class Custom_User(AbstractBaseUser):
-    RESTAURANT = 1
+    VENDOR = 1
     CUSTOMER = 2
     ROLE_CHOICES = (
-        (RESTAURANT, 'RESTAURANT'),
+        (VENDOR, 'RESTAURANT'),
         (CUSTOMER, 'CUSTOMER')
     )
 
@@ -105,4 +105,8 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 # post_save.connect(post_save_create_profile_receiver,sender=Custom_User)
 
 # use this decorator instead of manually write the code 
+
+
+
+
 
